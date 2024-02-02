@@ -1,0 +1,15 @@
+---
+dns_hosts:
+  hosts:
+    dns-fanat-home:
+      ansible_host: 192.168.1.2
+
+test_hosts:
+  hosts:
+    fanat-ubuntu-test:
+      ansible_host: 192.168.1.177
+
+home_assistants:
+  hosts:
+    home-assistant:
+      ansible_host: 192.168.1.128
