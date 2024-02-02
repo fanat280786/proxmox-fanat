@@ -32,5 +32,4 @@ output "dns-fanat-home_id" {
 output "dns-fanat-home_network_mac_addresses" {
   value       = proxmox_virtual_environment_vm.dns-fanat-home.mac_addresses[1]
   description = "dns-fanat-home mac_addresses"
-  хуйня
 }
