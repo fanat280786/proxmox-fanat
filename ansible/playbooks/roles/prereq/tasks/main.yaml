@@ -1,9 +1,0 @@
----
-- name: Install required system packages
-  apt:
-    pkg:
-      - htop
-      - net-tools
-      - mc
-    state: latest
-    update_cache: true
