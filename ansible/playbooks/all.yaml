@@ -1,0 +1,4 @@
+---
+- import_playbook: dns-server.yaml
+- import_playbook: home-assistant.yaml
+- import_playbook: test-hosts.yaml

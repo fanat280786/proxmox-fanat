@@ -1,0 +1,6 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: set timezone to Europe/Moscow
+      timezone:
+        name: Europe/Moscow
