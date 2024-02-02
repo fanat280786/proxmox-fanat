@@ -25,18 +25,18 @@
     update_cache: true
 
 - name: Ensure group "homeassistant" exists
-  ansible.builtin.group:
+  group:
     name: homeassistant
     state: present
 
 - name: Ensure user "homeassistant" exists
-  ansible.builtin.user:
+  user:
     name: homeassistant
     comment: Home Assistant
     group: homeassistant
 
 - name: Creates directory for Home Assistant VIRTUAL ENVIRONMENT
-  ansible.builtin.file:
+  file:
     path: /srv/homeassistant
     owner: homeassistant
     group: homeassistant
@@ -46,19 +46,19 @@
   become: true
   become_method: enable
   become_user: homeassistant
-  ansible.builtin.command: python3 -m venv /srv/homeassistant
+  command: python3 -m venv /srv/homeassistant
 
 - name: Activate virtual environment
   become: true
   become_method: enable
   become_user: homeassistant
-  ansible.builtin.shell: source /srv/homeassistant/bin/activate
+  shell: source /srv/homeassistant/bin/activate
 
 - name: Install required packages
   become: true
   become_method: enable
   become_user: homeassistant
-  ansible.builtin.shell: python3 -m pip install wheel
+  shell: python3 -m pip install wheel
   args:
     chdir: /srv/homeassistant
 
@@ -66,9 +66,9 @@
   become: true
   become_method: enable
   become_user: homeassistant
-  ansible.builtin.shell: pip3 install homeassistant==2024.1.5
+  shell: pip3 install homeassistant==2024.1.5
   args:
     chdir: /srv/homeassistant
 
 - name: Deactivate virtual environment
-  ansible.builtin.shell: deactivate
+  shell: deactivate
