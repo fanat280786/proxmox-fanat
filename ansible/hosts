@@ -7,12 +7,12 @@ dns_hosts:
 test_hosts:
   hosts:
     fanat-ubuntu-test:
-      ansible_host: 192.168.1.177
+      ansible_host: 192.168.1.77
 
 home_assistants:
   hosts:
     home-assistant:
-      ansible_host: 192.168.1.129
+      ansible_host: 192.168.1.29
 
 proxmox_hosts:
   hosts:
@@ -20,4 +20,13 @@ proxmox_hosts:
       ansible_host: 192.168.1.175
 #    vars:
 #      proxmox-fanat-hostname: 
-      
+minio_cluster_hosts:
+  hosts:
+    fanat-minio-0:
+      ansible_host: 192.168.1.50
+    fanat-minio-1:
+      ansible_host: 192.168.1.51
+    fanat-minio-2:
+      ansible_host: 192.168.1.52
+    fanat-minio-3:
+      ansible_host: 192.168.1.53

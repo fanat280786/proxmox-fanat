@@ -17,7 +17,8 @@ resource "proxmox_virtual_environment_vm" "fanat-home-assistant" {
     }
     ip_config {
       ipv4 {
-        address = "dhcp"
+        address = "192.168.1.29/24"
+        gateway = "192.168.1.1"
       }
     }
   }

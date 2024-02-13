@@ -17,7 +17,8 @@ resource "proxmox_virtual_environment_vm" "dns-fanat-home" {
     }
     ip_config {
       ipv4 {
-        address = "dhcp"
+        address = "192.168.1.2/24"
+        gateway = "192.168.1.1"
       }
     }
   }
