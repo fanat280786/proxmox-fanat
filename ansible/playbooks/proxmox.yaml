@@ -1,0 +1,15 @@
+- name: Play configure Proxmox server
+  hosts: proxmox_hosts
+  become: true
+  tasks:
+    - name: Set timezone to Europe/Moscow
+      community.general.timezone:
+        name: Europe/Moscow
+    - name: Print facts Hostname
+      ansible.builtin.debug:
+        msg: "Hostname: {{ ansible_hostname }}"
+    - name: Print facts FQDN
+      ansible.builtin.debug:
+        msg: "FQDN: {{ ansible_fqdn }}"
+  roles:
+    - nginx_proxmox

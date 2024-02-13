@@ -1,0 +1,15 @@
+server {
+    listen 80;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+	ssl_certificate     /etc/pve/nodes/proxmox/pve-ssl.pem;
+    ssl_certificate_key /etc/pve/nodes/proxmox/pve-ssl.key;
+    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+    location / {
+       proxy_pass https://127.0.0.1:8006;
+	}
+}
