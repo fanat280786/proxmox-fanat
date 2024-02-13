@@ -1,6 +1,7 @@
-resource "proxmox_virtual_environment_vm" "fanat-home-assistant" {
+resource "proxmox_virtual_environment_vm" "fanat-minio-cluster" {
+  count = 4
 
-  name      = "fanat-home-assistant"
+  name      = "fanat-minio-${count.index}"
   node_name = "${var.proxmox_node}"
 
   agent {
@@ -37,7 +38,7 @@ resource "proxmox_virtual_environment_vm" "fanat-home-assistant" {
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
-    size         = 32
+    size         = 50
   }
 
 }

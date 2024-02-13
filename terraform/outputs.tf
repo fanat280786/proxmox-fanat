@@ -33,3 +33,9 @@ output "dns-fanat-home_network_mac_addresses" {
   value       = proxmox_virtual_environment_vm.dns-fanat-home.mac_addresses[1]
   description = "dns-fanat-home mac_addresses"
 }
+
+######## fanat-minio-cluster ###########
+output "fanat-minio-cluster_ips" {
+  value       = proxmox_virtual_environment_vm.fanat-minio-cluster.*.ipv4_addresses[*][1]
+  description = "Interface IPs"
+}
