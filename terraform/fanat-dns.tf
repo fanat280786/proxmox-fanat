@@ -38,7 +38,7 @@ resource "proxmox_virtual_environment_vm" "dns-fanat-home" {
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
-    size         = 3
+    size         = 10
   }
 
 }

@@ -32,11 +32,18 @@ resource "proxmox_virtual_environment_vm" "fanat-minio-cluster" {
   }
   network_device {}
 
-
   disk {
     datastore_id = "local-btrfs"
     file_id      = proxmox_virtual_environment_file.ubuntu_cloud_image.id
     interface    = "virtio0"
+    iothread     = true
+    discard      = "on"
+    size         = 20
+  }
+  disk {
+    datastore_id = "local-btrfs"
+    file_format = "raw"
+    interface    = "virtio1"
     iothread     = true
     discard      = "on"
     size         = 50

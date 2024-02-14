@@ -1,0 +1,10 @@
+---
+- name: Install minio_cluster
+  hosts: minio_cluster_hosts
+  become: true
+  tasks:
+    - name: Set timezone to Europe/Moscow
+      community.general.timezone:
+        name: Europe/Moscow
+  roles:
+    - minio_cluster
