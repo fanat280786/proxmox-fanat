@@ -1,0 +1,6 @@
+---
+- name: Install required system packages
+  hosts: all
+  become: true
+  roles:
+    - etc_hosts

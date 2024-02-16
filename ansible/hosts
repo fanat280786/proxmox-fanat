@@ -1,4 +1,8 @@
 ---
+fanat-fedora-hp:
+  hosts:
+    localhost:
+
 dns_hosts:
   hosts:
     dns-fanat-home:
