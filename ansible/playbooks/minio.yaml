@@ -7,4 +7,5 @@
       community.general.timezone:
         name: Europe/Moscow
   roles:
+    - prereq
     - minio_cluster

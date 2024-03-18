@@ -1,6 +1,6 @@
 resource "proxmox_virtual_environment_vm" "fanat-minio-cluster" {
   count = 4
-
+  
   name      = "fanat-minio-${count.index}"
   node_name = "${var.proxmox_node}"
 
@@ -46,7 +46,31 @@ resource "proxmox_virtual_environment_vm" "fanat-minio-cluster" {
     interface    = "virtio1"
     iothread     = true
     discard      = "on"
-    size         = 50
+    size         = 10
+  }
+  disk {
+    datastore_id = "local-btrfs"
+    file_format = "raw"
+    interface    = "virtio2"
+    iothread     = true
+    discard      = "on"
+    size         = 10
+  }
+  disk {
+    datastore_id = "local-btrfs"
+    file_format = "raw"
+    interface    = "virtio3"
+    iothread     = true
+    discard      = "on"
+    size         = 10
+  }
+  disk {
+    datastore_id = "local-btrfs"
+    file_format = "raw"
+    interface    = "virtio4"
+    iothread     = true
+    discard      = "on"
+    size         = 10
   }
 
 }

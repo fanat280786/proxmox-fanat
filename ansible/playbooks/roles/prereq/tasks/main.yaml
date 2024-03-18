@@ -6,5 +6,6 @@
       - net-tools
       - mc
       - git
+      - tree
     state: latest
     update_cache: true

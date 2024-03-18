@@ -1,8 +1,4 @@
 ---
-- name: Print UUID
-  ansible.builtin.debug:
-    msg: "UUID vdb1: {{ ansible_devices.vdb.partitions.vdb1.uuid }}"
-
 - name: Add the group 'minio'
   ansible.builtin.group:
     name: minio-user
@@ -17,17 +13,49 @@
 
 - name: Creates directory minio mount
   ansible.builtin.file:
-    path: /minio
+    path: /s3/minio-{{ item }}
     owner: minio-user
     group: minio-user
     state: directory
+  loop:
+    - 0
+    - 1
+    - 2
+    - 3
 
-- name: Mount up device by UUID
+- name: Parted minio Disks
+  community.general.parted:
+    device: /dev/{{ item }}
+    number: 1
+    flags: [lvm]
+    state: present
+  loop:
+    - vdb
+    - vdc
+    - vdd
+    - vde
+
+- name: Format mino Disks
+  community.general.filesystem:
+    fstype: xfs
+    dev: /dev/{{ item }}1
+  loop:
+    - vdb
+    - vdc
+    - vdd
+    - vde
+
+- name: Mount minio Disks
   ansible.posix.mount:
-    path: /minio
-    src: UUID={{ ansible_devices.vdb.partitions.vdb1.uuid }}
-    fstype: btrfs
+    path: /s3/minio-{{ item.group }}
+    src: /dev/{{ item.name}}1
+    fstype: xfs
     state: mounted
+  loop:
+    - { name: 'vdb', group: '0'}
+    - { name: 'vdc', group: '1'}
+    - { name: 'vdd', group: '2'}
+    - { name: 'vde', group: '3'}
 
 - name: Copy minio file
   ansible.builtin.copy:

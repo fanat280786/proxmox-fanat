@@ -20,19 +20,19 @@ output "fanat-home-assistant_id" {
 }
 
 
-#### fanat-DNS #####
-output "dns-fanat-home_ip" {
-  value       = proxmox_virtual_environment_vm.dns-fanat-home.ipv4_addresses[1][0]
-  description = "Interface IPs"
-}
-output "dns-fanat-home_id" {
-  value       = proxmox_virtual_environment_vm.dns-fanat-home.vm_id
-  description = "Virtual Machine ID"
-}
-output "dns-fanat-home_network_mac_addresses" {
-  value       = proxmox_virtual_environment_vm.dns-fanat-home.mac_addresses[1]
-  description = "dns-fanat-home mac_addresses"
-}
+##### fanat-DNS #####
+#output "dns-fanat-home_ip" {
+#  value       = proxmox_virtual_environment_vm.dns-fanat-home.ipv4_addresses[1][0]
+#  description = "Interface IPs"
+#}
+#output "dns-fanat-home_id" {
+#  value       = proxmox_virtual_environment_vm.dns-fanat-home.vm_id
+#  description = "Virtual Machine ID"
+#}
+#output "dns-fanat-home_network_mac_addresses" {
+#  value       = proxmox_virtual_environment_vm.dns-fanat-home.mac_addresses[1]
+#  description = "dns-fanat-home mac_addresses"
+#}
 
 ######## fanat-minio-cluster ###########
 output "fanat-minio-cluster_ips" {

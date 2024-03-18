@@ -3,10 +3,10 @@ fanat-fedora-hp:
   hosts:
     localhost:
 
-dns_hosts:
-  hosts:
-    dns-fanat-home:
-      ansible_host: 192.168.1.2
+#dns_hosts:
+#  hosts:
+#    dns-fanat-home:
+#      ansible_host: 192.168.1.2
 
 test_hosts:
   hosts:
