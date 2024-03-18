@@ -22,15 +22,22 @@ proxmox_hosts:
   hosts:
     proxmox-fanat:
       ansible_host: 192.168.1.175
-#    vars:
-#      proxmox-fanat-hostname: 
-minio_cluster_hosts:
-  hosts:
-    fanat-minio-0:
-      ansible_host: 192.168.1.50
-    fanat-minio-1:
-      ansible_host: 192.168.1.51
-    fanat-minio-2:
-      ansible_host: 192.168.1.52
-    fanat-minio-3:
-      ansible_host: 192.168.1.53
+
+minio_cluster:
+  children:
+    minio_cluster_lb:
+      hosts:
+        192.168.1.55:
+    minio_cluster_hosts:
+      hosts:
+        192.168.1.[50:53]:
+      vars:
+        minio_conn_url: http://192.168.1.5{0...3}:9000/s3/minio-{0...3}
+        minio_root_passwd: !vault |
+              $ANSIBLE_VAULT;1.1;AES256
+              61373061346430336239613039396132623839326535636231643264303130363933356334396234
+              3435303264613330653432376466323363323733633934630a666162663530353037373163326430
+              34366537303038356235663531306636313936666462393939666265663432653566356465313531
+              6562316538353436390a656535373136383930353336393837383839363638356433376461313730
+              6437
+  

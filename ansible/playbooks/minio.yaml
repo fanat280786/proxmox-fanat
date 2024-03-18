@@ -9,3 +9,13 @@
   roles:
     - prereq
     - minio_cluster
+
+- name: Install minio_cluster Load Balancer
+  hosts: minio_cluster_lb
+  become: true
+  tasks:
+    - name: Set timezone to Europe/Moscow
+      community.general.timezone:
+        name: Europe/Moscow
+  roles:
+    - minio_cluster_lb
