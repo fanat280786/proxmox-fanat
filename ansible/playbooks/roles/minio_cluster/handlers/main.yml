@@ -1,0 +1,6 @@
+---
+- name: Restart minio if ENV was changed
+  ansible.builtin.systemd_service:  
+    state: restarted
+    name: minio
+  listen: "restart minio"

@@ -1,0 +1,29 @@
+---
+- name: Install required system packages
+  ansible.builtin.apt:
+    pkg:
+      - keepalived
+    state: latest
+    update_cache: true
+  notify: "start keepalived"
+
+- name: Creates keepalived logs directory
+  ansible.builtin.file:
+    path: /var/log/keepalived
+    state: directory
+
+- name: Creates keepalived conf file
+  ansible.builtin.template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+  notify: "restart keepalived"
+
+- name: Creates keepalived sh script for logging
+  ansible.builtin.template:
+    src: notify-web.sh.j2
+    dest: /etc/keepalived/notify-web.sh
+    mode: '0744'
+
+- name: Show IPs
+  debug:
+    msg: "{{  ansible_all_ipv4_addresses  }}"

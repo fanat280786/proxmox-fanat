@@ -1,0 +1,29 @@
+global_defs {
+    enable_script_security
+}
+
+vrrp_script nginx_check {
+    script "/usr/bin/curl http://127.0.0.1"
+    interval 5
+    user nginx
+}
+
+vrrp_instance minio_cluster {
+    state BACKUP
+    interface {{ ansible_default_ipv4.interface }}
+    virtual_router_id 50
+    priority 100
+    advert_int 2
+    preempt_delay 30
+    authentication {
+        auth_type PASS
+        auth_pass {{ vip_pass }}
+    }
+    virtual_ipaddress {
+        {{ vip }}
+    }
+    track_script {
+        nginx_check
+    }
+    notify /etc/keepalived/notify-web.sh root
+}

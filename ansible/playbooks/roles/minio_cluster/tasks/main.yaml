@@ -1,15 +1,17 @@
 ---
-- name: Add the group 'minio'
-  ansible.builtin.group:
-    name: minio-user
-    state: present
-
-- name: Add the user 'minio'
-  ansible.builtin.user:
-    name: minio-user
-    group: minio-user
-    comment: minio-user
-    shell: /sbin/nologin
+- name: Add user and group minio
+  block:
+    - name: Add the group 'minio'
+      ansible.builtin.group:
+        name: minio-user
+        state: present
+    
+    - name: Add the user 'minio'
+      ansible.builtin.user:
+        name: minio-user
+        group: minio-user
+        comment: minio-user
+        shell: /sbin/nologin
 
 - name: Creates directory minio mount
   ansible.builtin.file:
@@ -79,7 +81,7 @@
     owner: minio-user
     group: minio-user
   when: "ansible_service_mgr == 'systemd'" 
-  register: minio_env
+  notify: "restart minio"
 
 - name: Creates minio systemd file
   ansible.builtin.template:
@@ -92,9 +94,3 @@
     state: started
     enabled: true
     name: minio
-
-- name: Restart minio if ENV was changed
-  ansible.builtin.systemd_service:  
-    state: restarted
-    name: minio
-  when: minio_env.changed

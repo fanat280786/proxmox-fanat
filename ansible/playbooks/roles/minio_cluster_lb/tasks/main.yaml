@@ -1,4 +1,18 @@
 ---
+- name: Add user and group nginx
+  block:
+    - name: Add the group 'nginx'
+      ansible.builtin.group:
+        name: nginx
+        state: present
+    
+    - name: Add the user 'nginx'
+      ansible.builtin.user:
+        name: nginx
+        group: nginx
+        comment: minio-user
+        shell: /sbin/nologin
+
 - name: Install Nginx
   ansible.builtin.apt:
     pkg:
@@ -6,27 +20,36 @@
     state: latest
     update_cache: true
 
+- name: Creates directory minio mount
+  ansible.builtin.file:
+    path: /etc/nginx
+    owner: nginx
+    group: nginx
+    state: directory
+    recurse: yes
+    mode: '0744'
+
+
 - name: Set main config for Nginx
   template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+    owner: nginx
+    group: nginx
+    mode: '0744'
   when: "ansible_service_mgr == 'systemd'" 
-  register: nginx_main_conf
+  notify: "restart nginx"
 
 - name: Set miniolb.conf for Nginx
   template:
     src: miniolb.conf.j2
     dest: /etc/nginx/conf.d/miniolb.conf
+    owner: nginx
+    group: nginx
+    mode: '0744'
   when: "ansible_service_mgr == 'systemd'" 
-  register: nginx_miniolb_conf
+  notify: "restart nginx"
 
 - name: Debug groups
   debug:
     msg: "{{  groups['minio_cluster_hosts']  }}"
-
-- name: Restart Nginx
-  service:
-    name: nginx
-    state: restarted
-  when: (nginx_main_conf.changed) or
-        (nginx_miniolb_conf.changed)

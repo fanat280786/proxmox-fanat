@@ -1,0 +1,14 @@
+---
+- name: Start keepalived
+  ansible.builtin.systemd_service:  
+    state: started
+    enabled: true
+    name: keepalived
+  listen: "start keepalived"
+
+- name: Restart keepalived if conf was changed
+  ansible.builtin.systemd_service:  
+    state: restarted
+    name: keepalived
+  listen: "restart keepalived"
+
