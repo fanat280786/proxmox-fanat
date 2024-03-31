@@ -3,9 +3,5 @@
   become: true
 #  vars:
 #    local_network: "192.168.1.0/24"
-  tasks:
-    - name: Set timezone to Europe/Moscow
-      community.general.timezone:
-        name: Europe/Moscow
 #  roles:
 #    - homeassisatnt

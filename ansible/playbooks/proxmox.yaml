@@ -2,9 +2,6 @@
   hosts: proxmox_hosts
   become: true
   tasks:
-    - name: Set timezone to Europe/Moscow
-      community.general.timezone:
-        name: Europe/Moscow
     - name: Print facts Hostname
       ansible.builtin.debug:
         msg: "Hostname: {{ ansible_hostname }}"
