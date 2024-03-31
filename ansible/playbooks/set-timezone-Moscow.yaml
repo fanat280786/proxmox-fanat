@@ -1,0 +1,8 @@
+---
+- name: Set timezone Moscow
+  hosts: kubernetes
+  become: true
+  tasks:
+    - name: Set timezone to Europe/Moscow
+      community.general.timezone:
+        name: Europe/Moscow

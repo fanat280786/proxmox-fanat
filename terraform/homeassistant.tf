@@ -3,6 +3,8 @@ resource "proxmox_virtual_environment_vm" "fanat-home-assistant" {
   name      = "fanat-home-assistant"
   node_name = "${var.proxmox_node}"
 
+  started = false
+
   agent {
     enabled = true
   }

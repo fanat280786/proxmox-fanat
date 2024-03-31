@@ -1,7 +1,6 @@
 ######## fanat-test-ubuntu ###########
 output "fanat-test-ubuntu_ip" {
-  value       = proxmox_virtual_environment_vm.fanat-test-ubuntu.ipv4_addresses[1][0]
-  description = "Interface IPs"
+  value       = proxmox_virtual_environment_vm.fanat-test-ubuntu.ipv4_addresses
 }
 output "fanat-test-ubuntu_id" {
   value       = proxmox_virtual_environment_vm.fanat-test-ubuntu.vm_id
@@ -11,7 +10,7 @@ output "fanat-test-ubuntu_id" {
 
 #### fanat-home-assistant #####
 output "fanat-home-assistant_ip" {
-  value       = proxmox_virtual_environment_vm.fanat-home-assistant.ipv4_addresses[1][0]
+  value       = proxmox_virtual_environment_vm.fanat-home-assistant.ipv4_addresses
   description = "Interface IPs"
 }
 output "fanat-home-assistant_id" {

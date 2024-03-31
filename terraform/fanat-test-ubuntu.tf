@@ -2,6 +2,8 @@ resource "proxmox_virtual_environment_vm" "fanat-test-ubuntu" {
 
   name      = "fanat-test-ubuntu"
   node_name = "${var.proxmox_node}"
+  
+  started = false
 
   agent {
     enabled = true
