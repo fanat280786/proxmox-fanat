@@ -1,2 +1,3 @@
 ansible/facts.json
 ansible/my_vault_pass
+terraform/terraform.tfvars

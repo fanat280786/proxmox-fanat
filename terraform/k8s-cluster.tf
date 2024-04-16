@@ -10,7 +10,7 @@ resource "proxmox_virtual_environment_vm" "fanat-k8s-cluster-control" {
 
 
   initialization {
-    datastore_id = "local-btrfs"
+    datastore_id = "local-zfs"
     user_account {
       # do not use this in production, configure your own ssh key instead!
       username = "fanat"
@@ -33,7 +33,8 @@ resource "proxmox_virtual_environment_vm" "fanat-k8s-cluster-control" {
   network_device {}
 
   disk {
-    datastore_id = "local-btrfs"
+    datastore_id = "local-zfs"
+    file_format = "raw"
     file_id      = proxmox_virtual_environment_file.ubuntu_cloud_image.id
     interface    = "virtio0"
     iothread     = true
@@ -55,7 +56,7 @@ resource "proxmox_virtual_environment_vm" "fanat-k8s-cluster-worker" {
 
 
   initialization {
-    datastore_id = "local-btrfs"
+    datastore_id = "local-zfs"
     user_account {
       # do not use this in production, configure your own ssh key instead!
       username = "fanat"
@@ -78,7 +79,8 @@ resource "proxmox_virtual_environment_vm" "fanat-k8s-cluster-worker" {
   network_device {}
 
   disk {
-    datastore_id = "local-btrfs"
+    datastore_id = "local-zfs"
+    file_format = "raw"
     file_id      = proxmox_virtual_environment_file.ubuntu_cloud_image.id
     interface    = "virtio0"
     iothread     = true

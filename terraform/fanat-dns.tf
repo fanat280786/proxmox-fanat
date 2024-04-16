@@ -9,7 +9,7 @@
 #
 #
 #  initialization {
-#    datastore_id = "local-btrfs"
+#    datastore_id = "local-zfs"
 #    user_account {
 #      # do not use this in production, configure your own ssh key instead!
 #      username = "fanat"
@@ -33,7 +33,7 @@
 #
 #
 #  disk {
-#    datastore_id = "local-btrfs"
+#    datastore_id = "local-zfs"
 #    file_id      = proxmox_virtual_environment_file.ubuntu_cloud_image.id
 #    interface    = "virtio0"
 #    iothread     = true

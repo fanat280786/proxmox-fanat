@@ -18,12 +18,6 @@
     dest: /etc/keepalived/keepalived.conf
   notify: "restart keepalived"
 
-- name: Creates keepalived sh script for logging
-  ansible.builtin.template:
-    src: notify-web.sh.j2
-    dest: /etc/keepalived/notify-web.sh
-    mode: '0744'
-
 - name: Show IPs
   debug:
     msg: "{{  ansible_all_ipv4_addresses  }}"

@@ -1,6 +1,6 @@
 resource "proxmox_virtual_environment_file" "ubuntu_cloud_image" {
   content_type = "iso"
-  datastore_id = "local-btrfs"
+  datastore_id = "local"
   node_name = "${var.proxmox_node}"
 
   source_file {
@@ -10,7 +10,7 @@ resource "proxmox_virtual_environment_file" "ubuntu_cloud_image" {
 
 resource "proxmox_virtual_environment_file" "haos_cloud_image" {
   content_type = "iso"
-  datastore_id = "local-btrfs"
+  datastore_id = "local"
   node_name = "${var.proxmox_node}"
 
   source_file {
