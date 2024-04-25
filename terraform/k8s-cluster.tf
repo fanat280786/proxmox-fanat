@@ -4,7 +4,7 @@ resource "proxmox_virtual_environment_vm" "fanat-k8s-cluster-control" {
   name      = "fanat-k8s-control-plane-${count.index}"
   node_name = "${var.proxmox_node}"
 
-  started = false
+  started = true
 
   agent {
     enabled = true
@@ -52,7 +52,7 @@ resource "proxmox_virtual_environment_vm" "fanat-k8s-cluster-worker" {
   name      = "fanat-k8s-worker-${count.index}"
   node_name = "${var.proxmox_node}"
   
-  started = false
+  started = true
 
   agent {
     enabled = true

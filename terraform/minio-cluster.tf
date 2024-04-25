@@ -4,8 +4,8 @@ resource "proxmox_virtual_environment_vm" "fanat-minio-cluster" {
   name      = "fanat-minio-${count.index}"
   node_name = "${var.proxmox_node}"
 
-  started = true
-
+  started = false
+  on_boot = false
   agent {
     enabled = true
   }
