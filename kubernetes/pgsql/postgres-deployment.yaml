@@ -16,7 +16,7 @@ spec:
    spec:
       containers:
       - name: postgres        
-        image: postgres:12
+        image: postgres:14.3
         resources:
           requests:
             memory: "64Mi"
