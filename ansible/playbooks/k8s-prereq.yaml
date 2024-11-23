@@ -1,0 +1,77 @@
+---
+- name: Set timezone Moscow
+  hosts: kubernetes
+  become: true
+  tasks:
+    - name: Set timezone to Europe/Moscow
+      community.general.timezone:
+        name: Europe/Moscow
+
+- name: Install k8s prereqS
+  hosts: kubernetes
+  become: true
+  tasks:
+    - name: Install prereq
+      ansible.builtin.apt:
+        pkg:
+          - neofetch
+          - containerd
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gpg
+        state: latest
+        update_cache: true
+    - name: Update bashrc for neofetch
+      lineinfile:
+        dest: /home/fanat/.bashrc
+        line: "neofetch"
+        owner: fanat
+    - name: Manage /etc/hosts
+      ansible.builtin.lineinfile:
+        dest: /etc/cloud/templates/hosts.debian.tmpl
+        line: "{{ hostvars['fanat-k8s-control-plane-0']['ansible_default_ipv4']['address'] }} fanat-k8s-control-plane-0"
+    - name: Manage /etc/hosts
+      ansible.builtin.lineinfile:
+        dest: /etc/cloud/templates/hosts.debian.tmpl
+        line: "{{ hostvars['fanat-k8s-worker-0']['ansible_default_ipv4']['address'] }} fanat-k8s-worker-0"
+    - name: Manage /etc/hosts
+      ansible.builtin.lineinfile:
+        dest: /etc/cloud/templates/hosts.debian.tmpl
+        line: "{{ hostvars['fanat-k8s-worker-1']['ansible_default_ipv4']['address'] }} fanat-k8s-worker-1"
+
+    - name: Add an k8s Apt signing key
+      ansible.builtin.apt_key:
+        url: https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key
+        keyring: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Add kubernetes source list (Ubuntu)
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /"
+        state: present
+        filename: "kubernetes"
+    - name: Install kubelet, kubeadm, kubectl (Ubuntu)
+      ansible.builtin.apt:
+        pkg:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: latest
+    - name: Make sure a kubelet service is running and enabled
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+        state: started
+        enabled: true
+        name: kubelet
+    - name: Hold kubeadm
+      ansible.builtin.dpkg_selections:
+        name: kubeadm
+        selection: hold
+    - name: Hold kubelet
+      ansible.builtin.dpkg_selections:
+        name: kubelet
+        selection: hold
+    - name: Hold kubectl
+      ansible.builtin.dpkg_selections:
+        name: kubectl
+        selection: hold

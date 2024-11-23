@@ -1,8 +1,8 @@
-resource "proxmox_virtual_environment_vm" "fanat-home-assistant" {
+resource "proxmox_virtual_environment_vm" "fanat-nfs-server" {
 
-  name      = "fanat-home-assistant"
+  name      = "fanat-nfs-server"
   node_name = "${var.proxmox_node}"
-
+  
   started = true
   on_boot = true
 
@@ -20,7 +20,7 @@ resource "proxmox_virtual_environment_vm" "fanat-home-assistant" {
     }
     ip_config {
       ipv4 {
-        address = "192.168.1.29/24"
+        address = "192.168.1.95/24"
         gateway = "192.168.1.1"
       }
     }
@@ -30,7 +30,7 @@ resource "proxmox_virtual_environment_vm" "fanat-home-assistant" {
     cores = 2
   }
   memory {
-    dedicated = 2048
+    dedicated = 1024
   }
   network_device {}
 
@@ -42,7 +42,15 @@ resource "proxmox_virtual_environment_vm" "fanat-home-assistant" {
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
-    size         = 32
+    size         = 20
   }
 
+ disk {
+    datastore_id = "local-zfs"
+    file_format = "raw"
+    interface    = "virtio1"
+    iothread     = true
+    discard      = "on"
+    size         = 200
+  }
 }

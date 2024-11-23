@@ -1,0 +1,86 @@
+---
+- name: Set timezone Moscow
+  hosts: fanat-nfs-server
+  become: true
+  tasks:
+    - name: Set timezone to Europe/Moscow
+      community.general.timezone:
+        name: Europe/Moscow
+
+- name: Install prereqS
+  hosts: fanat-nfs-server
+  become: true
+  tasks:
+    - name: Install prereq
+      ansible.builtin.apt:
+        pkg:
+          - neofetch
+          - nfs-kernel-server
+        state: latest
+        update_cache: true
+    - name: Update bashrc for neofetch
+      lineinfile:
+        dest: /home/fanat/.bashrc
+        line: "neofetch"
+        owner: fanat
+
+- name: Prepare disk
+  hosts: fanat-nfs-server
+  become: true
+  tasks:
+    - name: Creates Mount Directory
+      ansible.builtin.file:
+        path: /mnt/nfs
+        state: directory
+
+    - name: Parted Disk
+      community.general.parted:
+        device: /dev/{{ item }}
+        number: 1
+        flags: [lvm]
+        state: present
+      loop:
+        - vdb
+
+    - name: Format Disks
+      community.general.filesystem:
+        fstype: xfs
+        dev: /dev/{{ item }}1
+      loop:
+        - vdb
+
+    - name: Grow Partition
+      command: "growpart /dev/{{ item }} 1"
+      ignore_errors: true
+      loop:
+        - vdb
+
+    - name: Mount minio Disks
+      ansible.posix.mount:
+        path: /mnt/nfs
+        src: /dev/{{ item.name }}1
+        fstype: xfs
+        state: mounted
+      loop:
+        - { name: 'vdb', group: '0'}
+
+- name: Start NFS
+  hosts: fanat-nfs-server
+  become: true
+  tasks:
+    - name: Manage /etc/exports
+      ansible.builtin.lineinfile:
+        dest: /etc/exports
+        line: "/mnt/nfs     *(ro,sync,subtree_check)"
+      register: exports_change
+    - name: Make sure a nfs-server service is running and enabled
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+        state: started
+        enabled: true
+        name: nfs-server
+    - name: Restar Nfs Server
+      ansible.builtin.systemd_service:
+        state: restarted
+        name: nfs-server
+      when: (exports_change.changed)

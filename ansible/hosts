@@ -29,6 +29,11 @@ minio_cluster:
       hosts:
         192.168.1.[50:53]:
 
+nfs_hosts:
+  hosts:
+    fanat-nfs-server:
+      ansible_host: 192.168.1.95
+
   
 kubernetes:
   hosts:
@@ -36,14 +41,6 @@ kubernetes:
       ansible_host: 192.168.1.40
       ip: 192.168.1.40
       access_ip: 192.168.1.40
-    fanat-k8s-control-plane-1:
-      ansible_host: 192.168.1.41
-      ip: 192.168.1.41
-      access_ip: 192.168.1.41
-    fanat-k8s-control-plane-2:
-      ansible_host: 192.168.1.42
-      ip: 192.168.1.42
-      access_ip: 192.168.1.42
     fanat-k8s-worker-0:
       ansible_host: 192.168.1.43
       ip: 192.168.1.43
@@ -56,11 +53,8 @@ kubernetes:
     kube_control_plane:
       hosts:
         fanat-k8s-control-plane-0:
-        fanat-k8s-control-plane-1:
-        fanat-k8s-control-plane-2:
     kube_node:
       hosts:
-        fanat-k8s-control-plane-1:
-        fanat-k8s-control-plane-2:
+        fanat-k8s-control-plane-0:
         fanat-k8s-worker-0:
         fanat-k8s-worker-1:

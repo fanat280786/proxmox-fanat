@@ -7,5 +7,10 @@
       - mc
       - git
       - tree
+      - cloud-guest-utils
     state: latest
     update_cache: true
+  retries: 50
+  delay: 5
+  register: apt_res
+  until: apt_res is success

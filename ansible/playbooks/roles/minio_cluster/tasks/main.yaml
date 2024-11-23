@@ -47,6 +47,15 @@
     - vdd
     - vde
 
+- name: Grow partition
+  command: "growpart /dev/{{ item }} 1"
+  ignore_errors: yes
+  loop:
+    - vdb
+    - vdc
+    - vdd
+    - vde
+
 - name: Mount minio Disks
   ansible.posix.mount:
     path: /s3/minio-{{ item.group }}

@@ -11,9 +11,9 @@ spec:
   ports:
     - name      : front
       protocol  : TCP
-      port      : 80  # external port
-      targetPort: 8123  # POD's port
-#  type: NodePort
-  type: LoadBalancer
-  externalIPs:
-    - 192.168.1.45
+      port      : 8123
+      targetPort: 8123
+      nodePort  : 30001
+  type: NodePort
+
+

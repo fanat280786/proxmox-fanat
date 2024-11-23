@@ -1,11 +1,8 @@
-resource "proxmox_virtual_environment_vm" "fanat-minio-cluster" {
-  count = 4
-  
-  name      = "fanat-minio-${count.index}"
+resource "proxmox_virtual_environment_vm" "dns-fanat-home" {
+
+  name      = "dns.fanat.home"
   node_name = "${var.proxmox_node}"
 
-  started = false
-  on_boot = false
   agent {
     enabled = true
   }
@@ -20,7 +17,7 @@ resource "proxmox_virtual_environment_vm" "fanat-minio-cluster" {
     }
     ip_config {
       ipv4 {
-        address = "192.168.1.5${count.index}/24"
+        address = "192.168.1.2/24"
         gateway = "192.168.1.1"
       }
     }
@@ -30,47 +27,15 @@ resource "proxmox_virtual_environment_vm" "fanat-minio-cluster" {
     cores = 2
   }
   memory {
-    dedicated = 2048
+    dedicated = 512
   }
   network_device {}
 
+
   disk {
     datastore_id = "local-zfs"
-    file_format = "raw"
     file_id      = proxmox_virtual_environment_file.ubuntu_cloud_image.id
     interface    = "virtio0"
-    iothread     = true
-    discard      = "on"
-    size         = 20
-  }
-  disk {
-    datastore_id = "local-zfs"
-    file_format = "raw"
-    interface    = "virtio1"
-    iothread     = true
-    discard      = "on"
-    size         = 10
-  }
-  disk {
-    datastore_id = "local-zfs"
-    file_format = "raw"
-    interface    = "virtio2"
-    iothread     = true
-    discard      = "on"
-    size         = 10
-  }
-  disk {
-    datastore_id = "local-zfs"
-    file_format = "raw"
-    interface    = "virtio3"
-    iothread     = true
-    discard      = "on"
-    size         = 10
-  }
-  disk {
-    datastore_id = "local-zfs"
-    file_format = "raw"
-    interface    = "virtio4"
     iothread     = true
     discard      = "on"
     size         = 10
