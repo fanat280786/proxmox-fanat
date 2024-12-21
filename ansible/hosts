@@ -2,32 +2,36 @@
 #fanat-fedora-hp:
 #  hosts:
 #    localhost:
-
-dns_hosts:
+all:
   hosts:
-    dns-fanat-home:
-      ansible_host: 192.168.1.2
+    fanat-ubuntu-test:
+      ansible_host: 192.168.1.77
+    proxmox-fanat:
+      ansible_host: 192.168.1.175
+    fanat-nfs-server:
+      ansible_host: 192.168.1.95
+    fanat-k8s-control-plane-0:
+      ansible_host: 192.168.1.40
+      ip: 192.168.1.40
+      access_ip: 192.168.1.40
+    fanat-k8s-worker-0:
+      ansible_host: 192.168.1.43
+      ip: 192.168.1.43
+      access_ip: 192.168.1.43
+    fanat-k8s-worker-1:
+      ansible_host: 192.168.1.44
+      ip: 192.168.1.44
+      access_ip: 192.168.1.44
 
 test_hosts:
   hosts:
     fanat-ubuntu-test:
       ansible_host: 192.168.1.77
 
-home_assistants:
-  hosts:
-    home-assistant:
-      ansible_host: 192.168.1.29
-
 proxmox_hosts:
   hosts:
     proxmox-fanat:
       ansible_host: 192.168.1.175
-
-minio_cluster:
-  children:
-    minio_cluster_hosts:
-      hosts:
-        192.168.1.[50:53]:
 
 nfs_hosts:
   hosts:
