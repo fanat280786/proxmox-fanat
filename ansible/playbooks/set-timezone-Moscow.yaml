@@ -1,6 +1,6 @@
 ---
 - name: Set timezone Moscow
-  hosts: all
+  hosts: test_hosts
   become: true
   tasks:
     - name: Set timezone to Europe/Moscow
