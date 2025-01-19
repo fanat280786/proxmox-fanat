@@ -1,0 +1,115 @@
+---
+- name: Set timezone Moscow
+  hosts: gitlab
+  become: true
+  tasks:
+    - name: Set timezone to Europe/Moscow
+      community.general.timezone:
+        name: Europe/Moscow
+
+- name: Install neofetch
+  hosts: gitlab
+  become: true
+  tasks:
+    - name: Install prereq
+      ansible.builtin.apt:
+        pkg:
+          - neofetch
+
+- name: Install gitlab prereqS
+  hosts: gitlab-core
+  become: true
+  tasks:
+    - name: Install prereq
+      ansible.builtin.apt:
+        pkg:
+          - curl
+          - openssh-server
+          - ca-certificates
+          - tzdata
+          - perl
+          - postfix
+        state: latest
+        update_cache: true
+
+- name: Update bashrc abd hosts
+  hosts: gitlab
+  become: true
+  tasks:
+    - name: Update bashrc for neofetch
+      lineinfile:
+        dest: /home/fanat/.bashrc
+        line: "neofetch"
+        owner: fanat
+    - name: Manage /etc/hosts
+      ansible.builtin.lineinfile:
+        dest: /etc/cloud/templates/hosts.debian.tmpl
+        line: "{{ hostvars['fanat-gitlab-core']['ansible_default_ipv4']['address'] }} fanat-gitlab-core"
+    - name: Manage /etc/hosts
+      ansible.builtin.lineinfile:
+        dest: /etc/cloud/templates/hosts.debian.tmpl
+        line: "{{ hostvars['fanat-gitlab-runner-0']['ansible_default_ipv4']['address'] }} fanat-gitlab-runner-0"
+    - name: Manage /etc/hosts
+      ansible.builtin.lineinfile:
+        dest: /etc/cloud/templates/hosts.debian.tmpl
+        line: "{{ hostvars['fanat-gitlab-runner-1']['ansible_default_ipv4']['address'] }} fanat-gitlab-runner-1"
+- name: Install gitlab
+  hosts: gitlab-core
+  become: true
+  tasks:
+    - name: Add an gitlab Apt signing key
+      ansible.builtin.apt_key:
+        url: https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey
+        keyring: /usr/share/keyrings/gitlab_gitlab-ce-archive-keyring.gpg
+    - name: Add gitlab source list (Ubuntu)
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/gitlab_gitlab-ce-archive-keyring.gpg] https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu/ jammy main"
+        state: present
+        filename: "gitlab_gitlab-ce"
+    - name: Install Gitlab
+      ansible.builtin.apt:
+        pkg:
+          - gitlab-ce
+
+- name: Configure Gitlab
+  hosts: gitlab-core
+  become: true
+  tasks:
+    - name: Config External URL
+      ansible.builtin.lineinfile:
+        dest: /etc/gitlab/gitlab.rb
+        regexp: "^external_url "
+        line: "external_url 'http://{{  hostvars[inventory_hostname]['ansible_hostname']  }}'"
+      register: gitlab_config_url
+    - name: Config container registry
+      ansible.builtin.lineinfile:
+        dest: /etc/gitlab/gitlab.rb
+        regexp: "^registry_external_url "
+        line: "registry_external_url 'http://{{  hostvars[inventory_hostname]['ansible_hostname']  }}:5050'"
+      register: gitlab_config_registry
+    - name: Reconfigure Gitlab
+      ansible.builtin.shell: 
+        cmd: gitlab-ctl reconfigure
+      when: gitlab_config_url.changed or 
+            gitlab_config_registry.changed
+
+- name: Install gitlab runners
+  hosts: gitlab-runners
+  become: true
+  tasks:
+    - name: Add an gitlab Apt signing key
+      ansible.builtin.apt_key:
+        url: https://packages.gitlab.com/runner/gitlab-runner/gpgkey
+        keyring: /usr/share/keyrings/runner_gitlab-runner-archive-keyring.gpg
+    - name: Add gitlab runner source list (Ubuntu)
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/runner_gitlab-runner-archive-keyring.gpg] https://packages.gitlab.com/runner/gitlab-runner/ubuntu/ jammy main"
+        state: present
+        filename: "runner_gitlab-runner"
+    - name: Install Gitlab Runner
+      ansible.builtin.apt:
+        pkg:
+          - gitlab-runner
+
+        
+    
