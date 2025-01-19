@@ -1,6 +1,6 @@
 ---
 - name: Set timezone Moscow
-  hosts: test_hosts
+  hosts: gitlab
   become: true
   tasks:
     - name: Set timezone to Europe/Moscow

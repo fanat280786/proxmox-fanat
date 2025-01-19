@@ -29,7 +29,7 @@ resource "proxmox_virtual_environment_vm" "fanat-test-ubuntu" {
     cores = 4
   }
   memory {
-    dedicated = 4096
+    dedicated = 2048
   }
   network_device {}
 

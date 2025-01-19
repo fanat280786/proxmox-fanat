@@ -15,6 +15,28 @@ nfs_hosts:
     fanat-nfs-server:
       ansible_host: 192.168.1.95
 
+gitlab:
+  hosts:
+    fanat-gitlab-core:
+      ansible_host: 192.168.1.90
+      ip: 192.168.1.90
+      access_ip: 192.168.1.90
+    fanat-gitlab-runner-0:
+      ansible_host: 192.168.1.91
+      ip: 192.168.1.91
+      access_ip: 192.168.1.91
+    fanat-gitlab-runner-1:
+      ansible_host: 192.168.1.92
+      ip: 192.168.1.92
+      access_ip: 192.168.1.92
+  children:
+    gitlab-core:
+      hosts:
+        fanat-gitlab-core:
+    gitlab-runners:
+      hosts:
+        fanat-gitlab-runner-0:
+        fanat-gitlab-runner-1:
   
 kubernetes:
   hosts:

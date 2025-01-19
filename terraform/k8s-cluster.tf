@@ -27,7 +27,7 @@ resource "proxmox_virtual_environment_vm" "fanat-k8s-cluster-control" {
   }
 
   cpu {
-    cores = 2
+    cores = 4
   }
   memory {
     dedicated = 2048
@@ -75,7 +75,7 @@ resource "proxmox_virtual_environment_vm" "fanat-k8s-cluster-worker" {
   }
 
   cpu {
-    cores = 2
+    cores = 4
   }
   memory {
     dedicated = 2048
