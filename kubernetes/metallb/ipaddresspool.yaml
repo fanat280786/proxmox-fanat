@@ -1,3 +1,4 @@
+---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
@@ -7,6 +8,7 @@ spec:
   addresses:
   - 192.168.1.30-192.168.1.35
 
+---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
