@@ -1,0 +1,20 @@
+# Количество реплик NGINX
+replicaCount: 1
+
+# Образ контейнера
+image:
+  repository: nginx
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# Настройки сервиса
+service:
+  # Тип сервиса: ClusterIP, NodePort или LoadBalancer
+  type: ClusterIP
+  # Порт, который будет слушать сервис
+  port: 80
+  # (Опционально) NodePort, если type = NodePort
+  # nodePort: 30080
+
+# Порт контейнера (обычно 80 для nginx)
+containerPort: 80
