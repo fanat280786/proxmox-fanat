@@ -1,5 +1,5 @@
 # Количество реплик NGINX
-replicaCount: 5
+replicaCount: 1
 
 # Образ контейнера
 image:
